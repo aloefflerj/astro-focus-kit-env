@@ -1,0 +1,34 @@
+version: '3.4'
+services:
+  client:
+    container_name: astro_focus_kit_client
+    build: 
+      context: ..
+      dockerfile: ./env/client.Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ../client:/app
+      - /app/node_modules
+    networks:
+      - astro_focus_kit_network
+    command: npm run dev
+  server:
+    container_name: astro_focus_kit_server
+    build: 
+      context: ..
+      dockerfile: ./env/server.Dockerfile
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env
+    volumes:
+      - ../server/db.json:/usr/src/app/db.json
+      - /usr/src/app/node_modules
+      - /usr/src/app/package*.json
+    networks:
+      - astro_focus_kit_network
+    command: npm run dev
+networks:
+  astro_focus_kit_network:
+      driver: bridge
