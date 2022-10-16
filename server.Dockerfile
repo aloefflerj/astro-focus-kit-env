@@ -1,14 +1,17 @@
 FROM node:16-alpine
 
-ARG ENV=development
-ENV ENV=${ENV}
-
 WORKDIR /usr/src/app
 
-COPY ./server /usr/src/app
 COPY ./server/package*.json /usr/src/app/
 
-RUN npm install
+ARG UID=1000
+ARG GID=1000
 
-EXPOSE 8000
-CMD  [ "npm", “run”, "${NODE_ENV}" ]
+RUN chown -Rh ${UID}:${GID} .
+USER ${UID}:${GID}
+
+RUN npm i
+
+COPY --chown=node:node ./server .
+
+EXPOSE 3000

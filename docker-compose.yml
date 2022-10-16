@@ -21,16 +21,38 @@ services:
       context: ..
       dockerfile: ./env/server.Dockerfile
     ports:
-      - 8000:8000
+      - 3000:3000
     env_file:
       - ./.env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
     volumes:
-      - ../server/db.json:/usr/src/app/db.json
+      - ../server:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/package*.json
     networks:
       - astro_focus_kit_network
     command: npm run dev
+  db:
+    image: mongo:4.1.8-xenial
+    container_name: astro_focus_kit_db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:  
+      - dbdata:/data/db   
+    networks:
+      - astro_focus_kit_network 
 networks:
   astro_focus_kit_network:
       driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:
