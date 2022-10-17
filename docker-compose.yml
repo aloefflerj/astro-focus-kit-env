@@ -4,13 +4,13 @@ services:
     container_name: astro_focus_kit_client
     build: 
       context: ..
-      dockerfile: ./env/client.Dockerfile
+      dockerfile: ./astro-focus-kit-env/client.Dockerfile
     ports:
       - 5173:5173
     env_file:
-      - ./.env
+      - .env
     volumes:
-      - ../client:/app
+      - ../astro-focus-kit-client:/app
       - /app/node_modules
     networks:
       - astro_focus_kit_network
@@ -19,11 +19,11 @@ services:
     container_name: astro_focus_kit_server
     build: 
       context: ..
-      dockerfile: ./env/server.Dockerfile
+      dockerfile: ./astro-focus-kit-env/server.Dockerfile
     ports:
       - 3000:3000
     env_file:
-      - ./.env
+      - .env
     environment:
       - MONGO_USERNAME=$MONGO_USERNAME
       - MONGO_PASSWORD=$MONGO_PASSWORD
@@ -31,16 +31,18 @@ services:
       - MONGO_PORT=$MONGO_PORT
       - MONGO_DB=$MONGO_DB
     volumes:
-      - ../server:/usr/src/app
+      - ../astro-focus-kit-server:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/package*.json
     networks:
       - astro_focus_kit_network
     command: npm run dev
-  db:
+  db-astro:
     image: mongo:4.1.8-xenial
     container_name: astro_focus_kit_db
     restart: unless-stopped
+    ports:
+      - 27017:27017
     env_file: .env
     environment:
       - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME

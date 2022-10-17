@@ -4,8 +4,8 @@ WORKDIR /app
 
 RUN mkdir -p /opt/node_modules
 
-COPY ./client /app
-COPY ./client/package*.json /app/
+COPY ./astro-focus-kit-client /app
+COPY ./astro-focus-kit-client/package*.json /app/
 
 ARG UID=1000
 ARG GID=1000
