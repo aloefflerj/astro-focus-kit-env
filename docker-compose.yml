@@ -36,6 +36,8 @@ services:
       - /usr/src/app/package*.json
     networks:
       - astro_focus_kit_network
+    links:
+      - db-astro
     command: npm run dev
   db-astro:
     image: mongo:4.1.8-xenial
@@ -47,8 +49,9 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
       - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
-    volumes:  
-      - dbdata:/data/db   
+      - MONGO_INITDB_DATABASE=astrofocuskit
+    volumes:
+      - dbdata:/data/db
     networks:
       - astro_focus_kit_network 
 networks:
