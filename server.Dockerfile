@@ -14,4 +14,4 @@ RUN npm i
 
 COPY --chown=node:node ./astro-focus-kit-server .
 
-EXPOSE 3000
+EXPOSE 8614
