@@ -15,6 +15,21 @@ services:
     networks:
       - astro_focus_kit_network
     command: npm run dev
+  extension:
+    container_name: astro_focus_kit_chrome_extension
+    build:
+      context: ..
+      dockerfile: ./astro-focus-kit-env/extension.Dockerfile
+    ports:
+      - 7852:7852
+    env_file:
+      - .env
+    volumes:
+      - ../astro-focus-kit-chrome-extension:/app
+      - /app/node_modules
+    networks:
+      - astro_focus_kit_network
+    command: npm run dev
   server:
     container_name: astro_focus_kit_server
     build: 
